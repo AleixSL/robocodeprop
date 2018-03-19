@@ -6,17 +6,19 @@ import robocode.ScannedRobotEvent;
 
 /**
  *
- * @author alber
+ * @author Alberto Rubio Ruiz 45790499Y
+ * @author Aleix Serra Llorens 47844438E
  */
 public class C3P0 extends AdvancedRobot
 {
     public static double energiaguardada = 1;
+    int direccionmovimiento2= 1;
     int direccionmovimiento= 1;
     int tiro=1;
     int fallados=0;
     @Override
     public void run() {
-        
+        //Establece todos los valores i empieza 
         centro();
         setAdjustRadarForRobotTurn(true);
         setColors(Color.black,Color.black,Color.black);
@@ -36,11 +38,12 @@ public class C3P0 extends AdvancedRobot
 
     @Override
     public void onScannedRobot(ScannedRobotEvent e) {
+        //Cuando encuentra un robot dispara y lo esquiva
         double distance = e.getDistance();
         setTurnRight(e.getBearing() + 90);
         ataque(e);
         if(energiaguardada != e.getEnergy()){
-             //si el enemigo pierde energia se mueve para esquivar ya que detecta que pierde energia                  
+             //si el enemigo dispara se mueve a un lado para esquivarlo ya que detecta que pierde energia                  
             direccionmovimiento *= -1;
             setAhead(75*direccionmovimiento);
             energiaguardada = e.getEnergy();
@@ -59,10 +62,11 @@ public class C3P0 extends AdvancedRobot
     @Override
     public void onHitByBullet(HitByBulletEvent e) {
         //si le tocamueve el radar para detectar el robot que le disparo y cambia de direccion para intentar esquivar las siguientes
-       stop();
-       setTurnRadarRightRadians(Utils.normalRelativeAngle(Posicionenemigo(e.getBearingRadians())) * 2);
+        stop();
+        setTurnRadarRightRadians(Utils.normalRelativeAngle(Posicionenemigo(e.getBearingRadians())) * 2);
             
-        
+        direccionmovimiento2 *= -1;
+        setAhead(25*direccionmovimiento2); 
         centro();
 
     }
